@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Estudiantil - CEPEA</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eee;
+            text-align: center;
+        }
+
+        .contenedor {
+            width: 350px;
+            margin: 80px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+
+        h2 {
+            background: #6A5ACD;
+            color: white;
+            padding: 20px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 10px 10px 0 0;
+        }
+        
+
+        label {
+            display: block;
+            text-align: left;
+            margin: 10px 0 5px 0;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+
+        input[type="text"], 
+        input[type="email"], 
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            box-sizing: border-box; 
+        }
+
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor">
+    <h2>Registro CEPEA</h2>
+    
+    <form action="registro.php" method="POST">
+        
+        <label for="nombre">Nombre Completo</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="identificacion">DNI o Código de Identificación</label>
+        <input type="text" id="identificacion" name="identificacion" required>
+        
+        <label for="codigo">Código de Estudiante (Generado)</label>
+        <input type="text" id="codigo" name="codigo" placeholder="Ej: CEPEA-2026-001" readonly>
+        
+        <label for="contrasena">Contraseña</label>
+        <input type="password" id="contrasena" name="contrasena" required>
+
+        <button type="submit">Registrarse</button>
+        
+    </form>
+</div>
+
+</body>
+</html>

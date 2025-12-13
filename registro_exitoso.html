@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Exitoso - CEPEA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eee;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .contenedor {
+            width: 350px;
+            margin: 80px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+        .exito {
+            color: #4CAF50;
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .codigo {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+        .botones {
+            margin-top: 30px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 0 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #45a049;
+        }
+        .btn-secondary {
+            background: #6A5ACD;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #5a4fbf;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="exito">✓</div>
+        <h2>¡Registro Exitoso!</h2>
+        <p>Tu cuenta ha sido creada correctamente en el sistema de votación CEPEA.</p>
+        <p><strong>Código de Estudiante:</strong></p>
+        <div class="codigo" id="codigoGenerado">CEPEA-2025-XXXX</div>
+        <p style="font-size: 0.9em; color: #888;">
+            Guarda este código. Lo necesitarás para iniciar sesión y votar.
+        </p>
+        
+        <div class="botones">
+            <a href="login.html" class="btn btn-primary">Iniciar Sesión</a>
+            <a href="registro.html" class="btn btn-secondary">Registrar Otro</a>
+        </div>
+    </div>
+
+    <script>
+        // Obtener el código generado de la URL o session storage
+        const urlParams = new URLSearchParams(window.location.search);
+        const codigo = urlParams.get('codigo') || sessionStorage.getItem('codigoGenerado');
+        
+        if (codigo) {
+            document.getElementById('codigoGenerado').textContent = codigo;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Votación CEPEA</title>
+</head>
+<style>
+
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eee;
+    text-align: center;
+}
+
+.contenedor {
+    width: 350px;
+    margin: 80px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    box-sizing: border-box; 
+}
+
+label {
+    display: block; 
+    text-align: left;
+    width: 90%;
+    margin: 0 auto 5px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+button {
+    background: #FFD55A;
+    border: none;
+    padding: 12px;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+button:hover {
+    background: #f1c232;
+}
+
+h2 {
+    background: #6A5ACD;
+    color: white;
+    padding: 20px;
+    margin: -20px -20px 20px -20px;
+    border-radius: 10px 10px 0 0;
+}
+
+</style>
+
+<body>
+
+<div class="contenedor">
+    <h2>Votación CEPEA 2025</h2>
+
+    <form action="login.php" method="POST">
+        
+        <label for="codigoEstudiante">Código de Estudiante</label>
+        <input type="text" id="codigoEstudiante" name="codigoEstudiante" required>
+
+        <label for="contrasena">Contraseña</label>
+        <input type="password" id="contrasena" name="contrasena" required>
+
+        <button type="submit">Iniciar Sección</button>
+        
+    </form>
+</div>
+    
+</body>
+</html>

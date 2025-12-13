@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voto Confirmado - CEPEA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eee;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .contenedor {
+            width: 350px;
+            margin: 80px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+        .voto-confirmado {
+            color: #4CAF50;
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .info-voto {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+            margin: 20px 0;
+        }
+        .candidato {
+            font-weight: bold;
+            color: #333;
+        }
+        .botones {
+            margin-top: 30px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 0 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn-primary {
+            background: #6A5ACD;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a4fbf;
+        }
+        .btn-secondary {
+            background: #FFD55A;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background: #f1c232;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="voto-confirmado">🗳️</div>
+        <h2>¡Voto Confirmado!</h2>
+        <p>Tu voto ha sido registrado exitosamente en el sistema de votación CEPEA 2025.</p>
+        
+        <div class="info-voto">
+            <p><strong>Candidato seleccionado:</strong></p>
+            <p class="candidato" id="candidatoSeleccionado">Candidato</p>
+        </div>
+        
+        <p style="font-size: 0.9em; color: #888;">
+            Recuerda que solo puedes votar una vez. ¡Gracias por participar!
+        </p>
+        
+        <div class="botones">
+            <a href="resultados.php" class="btn btn-primary">Ver Resultados</a>
+            <a href="login.html" class="btn btn-secondary">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <script>
+        // Obtener el candidato seleccionado de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const candidato = urlParams.get('candidato');
+        
+        if (candidato) {
+            const candidatos = {
+                'raul_pineda_admin': 'Raúl Pineda (Administración)',
+                'maria_palacios_sistemas': 'María Palacios (Sistemas)',
+                'jorge_choque_enfermeria': 'Jorge Choque (Enfermería)'
+            };
+            
+            document.getElementById('candidatoSeleccionado').textContent = candidatos[candidato] || candidato;
+        }
+    </script>
+</body>
+</html>

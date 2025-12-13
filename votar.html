@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votar - Votación CEPEA</title>
+<style>
+    body { font-family: Arial, sans-serif; background: #eee; text-align: center; }
+    .contenedor { width: 350px; margin: 80px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.15); }
+    h2 { background: #6A5ACD; color: white; padding: 20px; margin: -20px -20px 20px -20px; border-radius: 10px 10px 0 0; }
+    .opcion-candidato { display: block; text-align: left; padding: 10px 5px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; transition: background 0.2s; }
+    .opcion-candidato:hover { background: #f9f9f9; }
+    input[type="radio"] { margin-right: 10px; width: initial; padding: initial; border: initial; }
+    button { background: #4CAF50; color: white; border: none; padding: 12px; font-weight: bold; width: 100%; cursor: pointer; border-radius: 5px; margin-top: 20px; }
+    button:hover { background: #45a049; }
+</style>
+</head>
+<body>
+    
+<div class="contenedor">
+    <h2>Votación CEPEA 2025</h2>
+
+    <form action="votar.php" method="POST">
+        
+        <label style="display: block; margin-bottom: 15px; font-size: 1.1em;">Elige tu candidato CEPEINO</label>
+
+        <label class="opcion-candidato">
+            <input type="radio" name="candidato" value="raul_pineda_admin" required>
+            Raúl Pineda (Administración)
+        </label>
+
+        <label class="opcion-candidato">
+            <input type="radio" name="candidato" value="maria_palacios_sistemas">
+            María Palacios (Sistemas)
+        </label>
+
+        <label class="opcion-candidato">
+            <input type="radio" name="candidato" value="jorge_choque_enfermeria">
+            Jorge Choque (Enfermería)
+        </label>
+        
+        <button type="submit">Confirmar Voto</button>
+    </form>
+</div>
+    
+</body>
+</html>

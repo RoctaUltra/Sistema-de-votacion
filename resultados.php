@@ -12,15 +12,12 @@ try {
 try {
     $sql_candidatos = "
         SELECT 
-            c.nombre,  
+            c.nombre, 
             c.carrera,
-            v.candidato_elegido,
+            c.clave_voto,
             COUNT(v.id) AS conteo
         FROM candidatos c
         LEFT JOIN votos v ON c.clave_voto = v.candidato_elegido
-        
-        WHERE c.activo = 1
-        
         GROUP BY c.clave_voto, c.nombre, c.carrera
         ORDER BY conteo DESC";
         
@@ -122,6 +119,16 @@ h2 {
     font-weight: bold;
     color: #444;
 }
+
+.sin-votos {
+    color: #666;
+    font-style: italic;
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border: 1px dashed #dee2e6;
+}
 </style>
 </head>
 <body>
@@ -132,25 +139,33 @@ h2 {
     <p class="total-votos">Total de Votos Emitidos: <span><?= htmlspecialchars($total_votos) ?></span></p>
     <hr>
     
-    <?php foreach ($resultados as $candidato): 
-        $votos = $candidato['conteo'];
-        $porcentaje = calcular_porcentaje($votos, $total_votos);
-    ?>
-    
-    <div class="caja-resultado">
-        <div class="resultado-nombre">
-            <?= htmlspecialchars($candidato['nombre']) ?> (<?= htmlspecialchars($candidato['carrera']) ?>)
+    <?php if (empty($resultados)): ?>
+        <div class="sin-votos">
+            <p>No hay candidatos registrados en el sistema.</p>
+            <p><a href="lista.php">Verificar lista de votos</a></p>
         </div>
-        <div class="barra-contenedor">
-            <div class="barra-porcentaje" style="width: <?= $porcentaje ?>%;">
-                <span class="porc-text"><?= $votos ?> votos (<?= $porcentaje ?>%)</span>
+    <?php else: ?>
+        <?php foreach ($resultados as $candidato): 
+            $votos = $candidato['conteo'];
+            $porcentaje = calcular_porcentaje($votos, $total_votos);
+        ?>
+        
+        <div class="caja-resultado">
+            <div class="resultado-nombre">
+                <?= htmlspecialchars($candidato['nombre']) ?> (<?= htmlspecialchars($candidato['carrera']) ?>)
+            </div>
+            <div class="barra-contenedor">
+                <div class="barra-porcentaje" style="width: <?= $porcentaje ?>%;">
+                    <span class="porc-text"><?= $votos ?> votos (<?= $porcentaje ?>%)</span>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <?php endforeach; ?>
+        
+        <?php endforeach; ?>
+    <?php endif; ?>
     
     <p style="margin-top: 30px;"><a href="lista.php">Ver lista detallada de votos (Admin)</a></p>
+    <p><a href="index.html">Volver al inicio</a></p>
 
 </div>
 

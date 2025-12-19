@@ -18,11 +18,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: votar.html");
             exit();
         } else {
-            header("Location: login.html?error=credenciales");
+            header("Location: error_login.html?error=credenciales");
             exit();
         }
     } catch (PDOException $e) {
-        die("Error del sistema: " . $e->getMessage());
+        header("Location: error_login.html?error=sistema&mensaje=" . urlencode("Error del sistema: " . $e->getMessage()));
+        exit();
     }
 } else {
     header("Location: login.html");

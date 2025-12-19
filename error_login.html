@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error de Acceso - CEPEA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eee;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .contenedor {
+            width: 350px;
+            margin: 80px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+        .error {
+            color: #dc3545;
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        .mensaje-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #f5c6cb;
+            margin: 20px 0;
+            text-align: left;
+            font-weight: bold;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .ayuda {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ffeaa7;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .ayuda h4 {
+            margin-top: 0;
+            color: #856404;
+        }
+        .ayuda ul {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+        .botones {
+            margin-top: 30px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 0 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn-primary {
+            background: #6A5ACD;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a4fbf;
+        }
+        .btn-secondary {
+            background: #FFD55A;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background: #f1c232;
+        }
+        .icono-ayuda {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="error">🔒</div>
+        <h2>Error de Acceso</h2>
+        
+        <div class="mensaje-error" id="mensajeError">
+            Credenciales incorrectas. Verifica tu código de estudiante y contraseña.
+        </div>
+        
+        <div class="ayuda">
+            <span class="icono-ayuda">💡</span>
+            <h4>¿No puedes iniciar sesión?</h4>
+            <ul>
+                <li><strong>Código de estudiante:</strong> Revisa que esté correcto (CEPEA-YYYY-XXXX)</li>
+                <li><strong>Contraseña:</strong> Asegúrate de usar la contraseña correcta</li>
+                <li><strong>¿Primera vez?</strong> Si no tienes cuenta, ve al registro</li>
+                <li><strong>¿Olvidaste tu código?</strong> Contacta al administrador</li>
+            </ul>
+        </div>
+        
+        <p style="font-size: 0.9em; color: #888;">
+            Si necesitas ayuda adicional, por favor contacta al administrador del sistema CEPEA.
+        </p>
+        
+        <div class="botones">
+            <a href="login.html" class="btn btn-primary">Intentar Nuevamente</a>
+            <a href="registro.html" class="btn btn-secondary">Crear Cuenta</a>
+        </div>
+    </div>
+
+    <script>
+        // Obtener mensaje de error de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        
+        let mensaje = "Credenciales incorrectas. Verifica tu código de estudiante y contraseña.";
+        
+        switch(error) {
+            case 'credenciales':
+                mensaje = "Código de estudiante o contraseña incorrectos.";
+                break;
+            case 'sesion':
+                mensaje = "Sesión expirada. Por favor inicia sesión nuevamente.";
+                document.querySelector('.error').textContent = '⏰';
+                break;
+            case 'no_registrado':
+                mensaje = "No estás registrado en el sistema. Por favor crea una cuenta primero.";
+                document.querySelector('.error').textContent = '👤';
+                break;
+        }
+        
+        document.getElementById('mensajeError').textContent = mensaje;
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error del Sistema - CEPEA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eee;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .contenedor {
+            width: 350px;
+            margin: 80px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+        .error {
+            color: #dc3545;
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        .mensaje-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #f5c6cb;
+            margin: 20px 0;
+            text-align: left;
+            font-weight: bold;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .detalles-error {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 15px 0;
+            text-align: left;
+            font-family: monospace;
+            font-size: 0.8em;
+            color: #495057;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .botones {
+            margin-top: 30px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 0 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn-primary {
+            background: #6A5ACD;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a4fbf;
+        }
+        .btn-secondary {
+            background: #FFD55A;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background: #f1c232;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="error">⚠️</div>
+        <h2>Error del Sistema</h2>
+        
+        <div class="mensaje-error" id="mensajeError">
+            Ha ocurrido un error inesperado en el sistema.
+        </div>
+        
+        <div class="detalles-error" id="detallesError" style="display: none;">
+            <!-- Los detalles del error se mostrarán aquí -->
+        </div>
+        
+        <p style="font-size: 0.9em; color: #888;">
+            Si el problema persiste, por favor contacta al administrador del sistema CEPEA.
+        </p>
+        
+        <div class="botones">
+            <a href="index.html" class="btn btn-primary">Ir al Inicio</a>
+            <a href="javascript:history.back()" class="btn btn-secondary">Volver Atrás</a>
+        </div>
+    </div>
+
+    <script>
+        // Obtener información de error de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const mensaje = urlParams.get('mensaje');
+        const codigo = urlParams.get('codigo');
+        const detalles = urlParams.get('detalles');
+        
+        // Configurar mensaje principal
+        let mensajeError = "Ha ocurrido un error inesperado en el sistema.";
+        
+        if (mensaje) {
+            mensajeError = decodeURIComponent(mensaje);
+        } else if (codigo) {
+            switch(codigo) {
+                case '500':
+                    mensajeError = "Error interno del servidor. El sistema está experimentando problemas técnicos.";
+                    break;
+                case '404':
+                    mensajeError = "Página no encontrada. El recurso solicitado no existe.";
+                    break;
+                case '403':
+                    mensajeError = "Acceso denegado. No tienes permisos para acceder a este recurso.";
+                    break;
+                case 'timeout':
+                    mensajeError = "Tiempo de espera agotado. La operación tomó más tiempo del esperado.";
+                    break;
+                default:
+                    mensajeError = `Error ${codigo}: Ha ocurrido un problema en el sistema.`;
+            }
+        }
+        
+        document.getElementById('mensajeError').textContent = mensajeError;
+        
+        // Mostrar detalles adicionales si están disponibles
+        if (detalles) {
+            const detallesDiv = document.getElementById('detallesError');
+            detallesDiv.style.display = 'block';
+            detallesDiv.innerHTML = `<strong>Detalles técnicos:</strong><br>${decodeURIComponent(detalles)}`;
+        }
+        
+        // Cambiar icono según el tipo de error
+        const iconos = {
+            '500': '🔧',
+            '404': '🔍',
+            '403': '🚫',
+            'timeout': '⏰',
+            'database': '🗄️',
+            'network': '🌐',
+            'validation': '📝'
+        };
+        
+        const tipoError = urlParams.get('tipo');
+        if (iconos[tipoError]) {
+            document.querySelector('.error').textContent = iconos[tipoError];
+        }
+        
+        // Log del error para debugging
+        console.error('Error del sistema CEPEA:', {
+            mensaje: mensajeError,
+            codigo: codigo,
+            detalles: detalles,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent
+        });
+    </script>
+</body>
+</html>

@@ -11,6 +11,8 @@ Sistema completo de votación para el Centro Preuniversitario de Educación Avan
 - ✅ Gestión de resultados en tiempo real
 - ✅ Panel administrativo para ver lista de votos
 - ✅ Base de datos estructurada con relaciones
+- ✅ Manejo completo de errores con diseño profesional
+- ✅ Validación en tiempo real de formularios
 
 ## Archivos del Sistema
 
@@ -20,11 +22,13 @@ Sistema completo de votación para el Centro Preuniversitario de Educación Avan
 - `config_sesion.php` - Configuración de sesiones y funciones auxiliares
 
 ### Registro y Autenticación
-- `registro.html` - Formulario de registro estudiantil
+- `registro.html` - Formulario de registro estudiantil con validación
 - `registro.php` - Procesamiento del registro
 - `registro_exitoso.html` - Confirmación de registro exitoso
-- `login.html` - Formulario de inicio de sesión
+- `login.html` - Formulario de inicio de sesión con validación
 - `login.php` - Procesamiento del login
+- `error_registro.html` - Página de errores de registro
+- `error_login.html` - Página de errores de autenticación
 
 ### Votación
 - `votar.html` - Interfaz de votación
@@ -35,6 +39,9 @@ Sistema completo de votación para el Centro Preuniversitario de Educación Avan
 - `lista.php` - Lista de votos (panel administrativo)
 - `eliminar.php` - Eliminación de votos
 - `resultados.php` - Resultados oficiales con estadísticas
+
+### Manejo de Errores
+- `error_general.html` - Página genérica para errores del sistema
 
 ## Configuración de Base de Datos
 
@@ -92,20 +99,39 @@ $basedatos = "sistema_votacion_cepea";
 2. **Base de datos**: Ejecuta `database_setup.sql`
 3. **Configuración**: Edita `conexion_pdo.php` con tus credenciales
 4. **Permisos**: Asegúrate de que PHP tenga permisos de escritura
-5. **Acceso**: Navega a `http://tu-servidor/index.html`
+5. **Acceso**: Navega a `http://tu-servidor/votacion/index.html`
 
 ## Uso del Sistema
 
 ### Para Estudiantes
 1. **Registro**: Accede a "Registro Estudiantil" y completa el formulario
-2. **Código**: Guarda tu código de estudiante generado
-3. **Votación**: Usa tu código y contraseña para iniciar sesión
-4. **Voto**: Selecciona tu candidato y confirma tu voto
+2. **Validación**: El sistema valida tu DNI (8 dígitos) y contraseña (mín. 6 caracteres)
+3. **Código**: Guarda tu código de estudiante generado (CEPEA-YYYY-XXXX)
+4. **Votación**: Usa tu código y contraseña para iniciar sesión
+5. **Voto**: Selecciona tu candidato y confirma tu voto
 
 ### Para Administradores
 1. **Lista de votos**: Accede a "Lista de Votos (Admin)"
 2. **Resultados**: Consulta "Ver Resultados" para estadísticas
 3. **Gestión**: Elimina votos incorrectos si es necesario
+
+## Manejo de Errores
+
+### Páginas de Error Implementadas
+- **`error_registro.html`**: Errores durante el registro (duplicados, validaciones)
+- **`error_login.html`**: Errores de autenticación (credenciales, sesiones)
+- **`error_general.html`**: Errores generales del sistema
+
+### Validaciones en Tiempo Real
+- **Registro**: Validación de DNI (8 dígitos) y contraseña (mín. 6 caracteres)
+- **Login**: Validación de formato de código (CEPEA-YYYY-XXXX)
+- **Feedback visual**: Indicadores de campos válidos/inválidos
+
+### Mensajes de Error Personalizados
+- Errores de duplicado en registro
+- Credenciales incorrectas en login
+- Sesiones expiradas
+- Errores del sistema con detalles técnicos
 
 ## Candidatos Predefinidos
 - Raúl Pineda (Administración)
@@ -119,6 +145,8 @@ $basedatos = "sistema_votacion_cepea";
 - ✅ Prevención de inyección SQL
 - ✅ Validación de datos de entrada
 - ✅ Prevención de votos duplicados
+- ✅ Sanitización de salida HTML
+- ✅ Validación de formato en tiempo real
 
 ## Solución de Problemas
 
@@ -134,6 +162,16 @@ $basedatos = "sistema_votacion_cepea";
 ### Problemas de Votación
 - Verifica que las tablas estén creadas correctamente
 - Confirma que los candidatos estén insertados
+
+### Problemas de Registro
+- **"Ya existe estudiante"**: El DNI o código ya está registrado
+- **"Formato incorrecto"**: DNI debe tener 8 dígitos, contraseña mínimo 6 caracteres
+- **"Error del sistema"**: Problema de base de datos o servidor
+
+### Problemas de Login
+- **"Credenciales incorrectas"**: Código o contraseña incorrectos
+- **"Sesión expirada"**: Debes iniciar sesión nuevamente
+- **"No registrado"**: Primero debes crear una cuenta
 
 ## Personalización
 
@@ -151,11 +189,23 @@ Edita los archivos CSS en las etiquetas `<style>` de cada archivo HTML.
 ### Agregar Validaciones
 Utiliza las funciones de `config_sesion.php` para agregar validaciones adicionales.
 
+### Personalizar Errores
+Modifica las páginas de error para agregar mensajes específicos o enlaces de ayuda.
+
+## Logs y Debugging
+- Los errores se registran en la consola del navegador
+- Se incluyen detalles técnicos en páginas de error
+- Parámetros de error se pasan vía URL para debugging
+
 ## Soporte
-Para soporte técnico o consultas, contacta al administrador del sistema.
+Para soporte técnico o consultas:
+1. Revisa los mensajes de error específicos
+2. Consulta esta documentación
+3. Verifica la configuración de base de datos
+4. Contacta al administrador del sistema
 
 ## Licencia
 Este sistema es desarrollado para uso exclusivo de CEPEA.
 
 ---
-**© 2025 CEPEA - Sistema de Votación Seguro**# Sistema-de-votacion
+**© 2025 CEPEA - Sistema de Votación Seguro y Profesional**

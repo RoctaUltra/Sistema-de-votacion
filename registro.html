@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro Estudiantil - CEPEA</title>
     <style>
-
         body {
             font-family: Arial, sans-serif;
             background: #eee;
@@ -28,7 +27,6 @@
             margin: -20px -20px 20px -20px;
             border-radius: 10px 10px 0 0;
         }
-        
 
         label {
             display: block;
@@ -37,7 +35,6 @@
             font-size: 0.9em;
             font-weight: bold;
         }
-
 
         input[type="text"], 
         input[type="email"], 
@@ -50,6 +47,33 @@
             box-sizing: border-box; 
         }
 
+        input:focus {
+            border-color: #6A5ACD;
+            outline: none;
+        }
+
+        .error-mensaje {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #f5c6cb;
+            margin: 15px 0;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .codigo-preview {
+            background: #e8f5e8;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #c3e6cb;
+            margin: 10px 0;
+            font-family: monospace;
+            font-weight: bold;
+            display: none;
+        }
 
         button {
             background: #4CAF50;
@@ -66,31 +90,188 @@
         button:hover {
             background: #45a049;
         }
+
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .formulario-grupo {
+            margin-bottom: 15px;
+        }
+
+        .placeholder-info {
+            font-size: 0.8em;
+            color: #888;
+            text-align: left;
+            margin-top: 5px;
+        }
+
+        .enlaces-ayuda {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .enlaces-ayuda a {
+            color: #6A5ACD;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin: 0 10px;
+            display: inline-block;
+        }
+
+        .enlaces-ayuda a:hover {
+            text-decoration: underline;
+        }
+
+        .validacion {
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
+        .valido {
+            color: #28a745;
+        }
+
+        .invalido {
+            color: #dc3545;
+        }
     </style>
 </head>
 <body>
 
 <div class="contenedor">
     <h2>Registro CEPEA</h2>
+
+    <div class="error-mensaje" id="errorMensaje">
+        Error en el registro. Por favor verifica tus datos.
+    </div>
     
-    <form action="registro.php" method="POST">
+    <form action="registro.php" method="POST" id="registroForm">
         
-        <label for="nombre">Nombre Completo</label>
-        <input type="text" id="nombre" name="nombre" required>
+        <div class="formulario-grupo">
+            <label for="nombre">Nombre Completo</label>
+            <input type="text" id="nombre" name="nombre" required 
+                   placeholder="Ej: Juan Carlos Pérez">
+            <div class="placeholder-info">
+                Ingresa tu nombre completo tal como aparece en tu DNI
+            </div>
+        </div>
 
-        <label for="identificacion">DNI o Código de Identificación</label>
-        <input type="text" id="identificacion" name="identificacion" required>
+        <div class="formulario-grupo">
+            <label for="identificacion">DNI o Código de Identificación</label>
+            <input type="text" id="identificacion" name="identificacion" required 
+                   placeholder="Ej: 12345678" maxlength="8">
+            <div class="placeholder-info">
+                Debe tener exactamente 8 dígitos
+            </div>
+            <div class="validacion" id="validacionDni"></div>
+        </div>
         
-        <label for="codigo">Código de Estudiante (Generado)</label>
-        <input type="text" id="codigo" name="codigo" placeholder="Ej: CEPEA-2026-001" readonly>
+        <div class="formulario-grupo">
+            <label>Tu Código de Estudiante será:</label>
+            <div class="codigo-preview" id="codigoPreview">
+                CEPEA-2025-XXXX
+            </div>
+            <div class="placeholder-info">
+                El código se genera automáticamente al registrarte
+            </div>
+        </div>
         
-        <label for="contrasena">Contraseña</label>
-        <input type="password" id="contrasena" name="contrasena" required>
+        <div class="formulario-grupo">
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contrasena" name="contrasena" required 
+                   placeholder="Mínimo 6 caracteres" minlength="6">
+            <div class="placeholder-info">
+                Debe tener al menos 6 caracteres
+            </div>
+            <div class="validacion" id="validacionPassword"></div>
+        </div>
 
-        <button type="submit">Registrarse</button>
+        <button type="submit" id="submitBtn" disabled>Registrarse</button>
         
     </form>
+
+    <div class="enlaces-ayuda">
+        <a href="login.html">¿Ya tienes cuenta? Inicia sesión</a>
+        <a href="index.html">Volver al inicio</a>
+    </div>
 </div>
+
+<script>
+    // Validación en tiempo real
+    const dniInput = document.getElementById('identificacion');
+    const passwordInput = document.getElementById('contrasena');
+    const submitBtn = document.getElementById('submitBtn');
+    const validacionDni = document.getElementById('validacionDni');
+    const validacionPassword = document.getElementById('validacionPassword');
+
+    // Validar DNI
+    dniInput.addEventListener('input', function(e) {
+        const dni = e.target.value;
+        const patron = /^\d{8}$/;
+        
+        if (dni === '') {
+            validacionDni.innerHTML = '';
+            submitBtn.disabled = true;
+        } else if (patron.test(dni)) {
+            validacionDni.innerHTML = '<span class="valido">✓ DNI válido</span>';
+            validarFormulario();
+        } else {
+            validacionDni.innerHTML = '<span class="invalido">✗ Debe tener exactamente 8 dígitos</span>';
+            submitBtn.disabled = true;
+        }
+    });
+
+    // Validar contraseña
+    passwordInput.addEventListener('input', function(e) {
+        const password = e.target.value;
+        
+        if (password === '') {
+            validacionPassword.innerHTML = '';
+            submitBtn.disabled = true;
+        } else if (password.length >= 6) {
+            validacionPassword.innerHTML = '<span class="valido">✓ Contraseña válida</span>';
+            validarFormulario();
+        } else {
+            validacionPassword.innerHTML = '<span class="invalido">✗ Debe tener al menos 6 caracteres</span>';
+            submitBtn.disabled = true;
+        }
+    });
+
+    // Función para validar formulario completo
+    function validarFormulario() {
+        const nombre = document.getElementById('nombre').value;
+        const dni = dniInput.value;
+        const password = passwordInput.value;
+        
+        const formularioValido = nombre.trim() !== '' && 
+                               /^\d{8}$/.test(dni) && 
+                               password.length >= 6;
+        
+        submitBtn.disabled = !formularioValido;
+    }
+
+    // Validar nombre
+    document.getElementById('nombre').addEventListener('input', validarFormulario);
+
+    // Verificar si hay errores en la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    
+    if (error) {
+        const errorDiv = document.getElementById('errorMensaje');
+        errorDiv.style.display = 'block';
+        
+        setTimeout(() => {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }, 5000);
+    }
+
+    // Mostrar vista previa del código
+    document.getElementById('codigoPreview').style.display = 'block';
+</script>
 
 </body>
 </html>

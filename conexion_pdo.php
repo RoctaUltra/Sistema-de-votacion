@@ -1,21 +1,21 @@
 <?php
-$host = 'localhost';
-$dbname = 'votacion_cepea';
-$user = 'root';
-$pass = ''; 
-$charset = 'utf8mb4';
+$servidor = "localhost";
+$usuario = "root";
+$clave = "";
+$basedatos = "sistema_votacion_cepea";
 
-$dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
 
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
+$conexion = new mysqli($servidor, $usuario, $clave, $basedatos);
+
+if ($conexion->connect_error) {
+    die("Error de conexión: " . $conexion->connect_error);
+}
+
 
 try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (\PDOException $e) {
-    die("Error de conexión: " . $e->getMessage());
+    $pdo = new PDO("mysql:host=$servidor;dbname=$basedatos", $usuario, $clave);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Error de conexión PDO: " . $e->getMessage());
 }
 ?>

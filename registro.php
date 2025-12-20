@@ -2,41 +2,42 @@
 include "conexion_pdo.php"; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $nombre = trim($_POST['nombre'] ?? '');
-    $identificacion = trim($_POST['identificacion'] ?? '');
-    $contrasena_plana = $_POST['contrasena'] ?? '';
-
-    if (empty($nombre) || empty($identificacion) || empty($contrasena_plana)) {
-        die("Todos los campos son obligatorios.");
-    }
-
-    $codigo = "CEPEA-" . date("Y") . "-" . rand(1000, 9999);
-
+    $nombre = trim($_POST['nombre']);
+    $identificacion = trim($_POST['identificacion']);
+    $contrasena_plana = $_POST['contrasena'];
+    
+    $codigo = "CEPEA-" . date("Y") . "-" . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
     $contrasena_hashed = password_hash($contrasena_plana, PASSWORD_DEFAULT);
 
     try {
-        $sql = "INSERT INTO estudiantes 
-                (nombre, identificacion, codigo_estudiante, contrasena_hash, fecha_registro, activo) 
-                VALUES (?, ?, ?, ?, NOW(), 1)";
+        $sql = "INSERT INTO estudiantes (nombre, identificacion, codigo_estudiante, contrasena_hash) 
+                VALUES (?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
-
+        
         if ($stmt->execute([$nombre, $identificacion, $codigo, $contrasena_hashed])) {
             header("Location: registro_exitoso.html?codigo=" . urlencode($codigo));
             exit();
         } else {
-            echo "Error al registrar: no se pudo crear la cuenta.";
+            // Error en la inserción
+            $error_mensaje = "Error al registrar: No se pudo crear la cuenta.";
+            header("Location: error_registro.html?mensaje=" . urlencode($error_mensaje));
+            exit();
         }
-
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
-            echo "Error: Ya existe un estudiante con esa identificación o código.";
+            // Error de duplicado (DNI o código ya existe)
+            $error_mensaje = "Ya existe un estudiante registrado con esa identificación o código.";
+            header("Location: error_registro.html?mensaje=" . urlencode($error_mensaje));
+            exit();
         } else {
-            echo "Error del sistema: " . $e->getMessage();
+            // Error general del sistema
+            $error_mensaje = "Error del sistema: " . $e->getMessage();
+            header("Location: error_registro.html?mensaje=" . urlencode($error_mensaje));
+            exit();
         }
     }
-
 } else {
+    // No es una petición POST, redirigir al formulario
     header("Location: registro.html");
     exit();
 }
